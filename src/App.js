@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ProductPage from './pages/ProductPage';
+import HomePage from './pages/HomePage';
 
-function App() {
+const App = () => {
+  const location = useLocation();
+  
+  const isProductPage = location.pathname.startsWith('/product');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {!isProductPage && <Header />}
+      <Routes>
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+      {!isProductPage && <Footer />}
+    </>
   );
-}
+};
 
-export default App;
+const AppWrapper = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWrapper;
