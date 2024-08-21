@@ -1,60 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';
 import ProductInfo from '../components/ProductInfo';
 import Comments from '../components/Comments';
 import Footer from '../components/Footer';
 import '../styles/app.css';
-
-// Static data for demonstration purposes
-const productData = [
-  {
-    id: 1,
-    title: 'Card 1',
-    description: 'This is the description for Card 1.',
-    imageUrl: 'https://via.placeholder.com/150',
-    details: 'Detailed information about Card 1...',
-    info: 'Additional product info for Card 1...',
-    comments: ['Great product!', 'Really enjoyed it.']
-  },
-  {
-    id: 2,
-    title: 'Card 2',
-    description: 'This is the description for Card 2.',
-    imageUrl: 'https://via.placeholder.com/150',
-    details: 'Detailed information about Card 2...',
-    info: 'Additional product info for Card 2...',
-    comments: ['Not bad.', 'Could be improved.']
-  },
-  {
-    id: 3,
-    title: 'Card 3',
-    description: 'This is the description for Card 3.',
-    imageUrl: 'https://via.placeholder.com/150',
-    details: 'Detailed information about Card 3...',
-    info: 'Additional product info for Card 3...',
-    comments: ['Excellent!', 'Would buy again.']
-  }
-];
+import axios from 'axios';
 
 const ProductPage = () => {
   const { id } = useParams();
-  const product = productData.find(p => p.id === parseInt(id));
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
+  const handleProduct = async () => {
+    try {
+      const { data } = await axios.post("http://localhost:5000/product", { id });
+      setProduct(data);
+    } catch (e) {
+      setError('Failed to load product data.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      handleProduct();
+    }
+  }, [id]);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <ProductDetails
-        title={product.title}
-        description={product.description}
-        imageUrl={product.imageUrl}
-        details={product.details}
-      />
-      <ProductInfo info={product.info} />
-      <Comments comments={product.comments} />
+      {product ? (
+        <div>
+          <ProductDetails product={product} />
+          <ProductInfo product={product} />
+          <Comments comments={product.comments} />
+        </div>
+      ) : (
+        <p>No product found</p>
+      )}
       <Footer />
     </div>
   );

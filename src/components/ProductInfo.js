@@ -100,10 +100,14 @@ const cardData = [
   },
 ];
 
-const ProductInfo = () => {
+const ProductInfo = ({ product }) => {
   const [isCharacteristicsCollapsed, setIsCharacteristicsCollapsed] = useState(false);
   const [isAboutProductCollapsed, setIsAboutProductCollapsed] = useState(false);
 
+  const characteristics = typeof product.characteristics === 'string'
+      ? JSON.parse(product.characteristics)
+    : product.characteristics;
+  
   const chunkArray = (array, size) => {
     const result = [];
     for (let i = 0; i < array.length; i += size) {
@@ -119,7 +123,8 @@ const ProductInfo = () => {
       <div className='row'>
         <div className='col-lg-6'>
           <div className="characteristics">
-            <div className='d-block pb-2 tags-name d-flex justify-content-between'
+            <div 
+              className='d-block pb-2 tags-name d-flex justify-content-between'
               onClick={() => setIsCharacteristicsCollapsed(!isCharacteristicsCollapsed)}
               style={{ cursor: 'pointer' }}
             >
@@ -127,21 +132,15 @@ const ProductInfo = () => {
               <FontAwesomeIcon icon={isCharacteristicsCollapsed ? faChevronDown : faChevronUp} />
             </div>
             <Collapse in={!isCharacteristicsCollapsed}>
-              <div className="mt-3">
+              <div id="characteristics-collapse" className="mt-3">
                 <table className="table table-borderless table-striped">
                   <tbody>
-                    <tr>
-                      <th scope="row">Color</th>
-                      <td>White</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Memory</th>
-                      <td>8 Gb</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">Size</th>
-                      <td>140x100 cm</td>
-                    </tr>
+                    {characteristics && Object.entries(characteristics).map(([key, values]) => (
+                      <tr key={key}>
+                        <th scope="row">{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+                        <td>{values.join(', ')}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -161,7 +160,7 @@ const ProductInfo = () => {
             <Collapse in={!isAboutProductCollapsed}>
               <div className="mt-3">
                 <p>
-                  This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
+                  {product.description}
                 </p>
               </div>
             </Collapse>
@@ -210,12 +209,7 @@ const ProductInfo = () => {
               <div className="mt-3 row">
                 <div className="col-lg-10">
                   <p>
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
-                    This product is designed to provide the best experience with its unique features. It comes in various colors and sizes, making it suitable for everyone.
+                    {product.supplierInfo.contact}
                   </p>
                 </div>
                 <div className="col-lg-2">

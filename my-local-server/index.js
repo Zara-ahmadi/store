@@ -5,15 +5,13 @@ const cors = require('cors');
 const app = express();
 const port = 5000;
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// MySQL connection
 const db = mysql.createConnection({
   host: 'localhost',
-  user: 'root', 
-  password: '', 
+  user: 'root',
+  password: '',
   database: 'store'
 });
 
@@ -25,32 +23,46 @@ db.connect(err => {
   console.log('Connected to MySQL database');
 });
 
-// Routes
-app.get('/users', (req, res) => {
-  db.query('SELECT * FROM users', (err, results) => {
-    if (err) {
-      console.error('Error fetching users:', err);
-      res.status(500).send('Server error');
-      return;
-    }
-    res.json(results);
+const queryDatabase = (query, params) => {
+  return new Promise((resolve, reject) => {
+    db.query(query, params, (err, results) => {
+      if (err) {
+        console.error('Query error:', err);
+        reject(err);
+      } else {
+        resolve(results);
+      }
+    });
   });
+};
+
+
+app.get('/products', async (req, res) => {
+  try {
+    const results = await queryDatabase('SELECT * FROM products');
+    res.json(results);
+  } catch (err) {
+    console.error('Error fetching products:', err);
+    res.status(500).send('Server error');
+  }
 });
 
-app.post('/users', (req, res) => {
-  const { username, email, password } = req.body;
-  db.query(
-    'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
-    [username, email, password],
-    (err, results) => {
-      if (err) {
-        console.error('Error adding user:', err);
-        res.status(500).send('Server error');
-        return;
-      }
-      res.json({ id: results.insertId, username, email, password });
+app.post('/product', async (req, res) => {
+  const { id } = req.body;
+  console.log(`Fetching product with ID: ${id}`);
+  try {
+    const results = await queryDatabase('SELECT * FROM products WHERE id = ?', [id]);
+    if (results.length > 0) {
+      console.log('Product found:', results[0]);
+      res.json(results[0]);
+    } else {
+      console.log('Product not found'); 
+      res.status(404).send('Product not found');
     }
-  );
+  } catch (err) {
+    console.error('Error fetching product:', err);
+    res.status(500).send('Server error');
+  }
 });
 
 app.listen(port, () => {
