@@ -3,9 +3,11 @@ import { useParams } from 'react-router-dom';
 import ProductDetails from '../components/ProductDetails';
 import ProductInfo from '../components/ProductInfo';
 import Comments from '../components/Comments';
+import VendorInfo from '../components/VendorInfo';
 import Footer from '../components/Footer';
 import '../styles/app.css';
 import axios from 'axios';
+import Cards from '../components/Cards';
 
 const ProductPage = () => {
   const { id } = useParams();
@@ -39,6 +41,9 @@ const ProductPage = () => {
         <div>
           <ProductDetails product={product} />
           <ProductInfo product={product} />
+          <Cards product={product} />
+          <VendorInfo product={product} />
+          <Cards product={product} />
           <Comments comments={product.comments} />
         </div>
       ) : (
