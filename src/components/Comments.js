@@ -33,7 +33,7 @@ const Comments = () => {
     : comments;
 
   return (
-    <div className="container pt-5">
+    <div className="container pt-5 pb-5">
       <div className="row">
         {/* Empty Column */}
         <div className="col-lg-1 col-md-1"></div>

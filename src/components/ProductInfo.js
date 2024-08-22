@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import Collapse from 'react-bootstrap/Collapse';
-import Carousel from 'react-bootstrap/Carousel'; // Import Carousel from react-bootstrap
-import Card from './Card'; // Import the Card component
 import '../styles/app.css';  
 import axios from 'axios';
 
@@ -34,15 +32,13 @@ const ProductInfo = ({ product }) => {
       ? JSON.parse(product.characteristics)
     : product.characteristics;
   
-  const chunkArray = (array, size) => {
-    const result = [];
-    for (let i = 0; i < array.length; i += size) {
-      result.push(array.slice(i, i + size));
-    }
-    return result;
-  };
-
-  const chunkedCardData = chunkArray(products, 4);
+  // const chunkArray = (array, size) => {
+  //   const result = [];
+  //   for (let i = 0; i < array.length; i += size) {
+  //     result.push(array.slice(i, i + size));
+  //   }
+  //   return result;
+  // };
 
   return (
     <div className="container pt-5">
