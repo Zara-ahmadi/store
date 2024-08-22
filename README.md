@@ -29,7 +29,11 @@ This project is a web application for managing comments, featuring a React front
    ```bash
    cd my-local-server
 2. **Create Database store**
-    - use store.sql for creating tables   
+    - use store.sql for creating tables
+    
+   ```bash
+   node index.js
+   
 
 ## Learn More
 
