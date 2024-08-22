@@ -343,24 +343,148 @@ button a:visited  {
 }
 
 /* Comments Section Styles */
-.comments-section {
-  padding: 20px;
-  border-top: 1px solid #ccc;
-  margin-top: 20px;
+.comments-container {
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-.comment {
-  margin-bottom: 15px;
+.filter-section {
+  padding: 1rem;
 }
 
-.comments-section .comment p {
-  margin: 0;
+.filter-buttons {
+  display: flex;
+  flex-direction: column;
 }
 
-textarea {
+.filter-btn {
+  margin-bottom: 0.5rem;
+}
+
+.filter-btn.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.clear-filter-btn {
+  margin-top: 1rem;
+}
+
+.comment-section {
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.comment-textarea {
   width: 100%;
-  height: 80px;
-  margin-top: 10px;
+  resize: vertical;
+}
+
+.rating-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rating-stars {
+  display: flex;
+}
+
+.rating-star {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.rating-star.filled {
+  color: #ffc107;
+}
+
+.submit-btn {
+  padding: 0.5rem 1rem;
+}
+
+.star-icon {
+  color: #ffc107;
+}
+
+.comment-item {
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  word-wrap: break-word; /* Ensures long words break and don’t overflow */
+  overflow-wrap: break-word; /* Supports newer CSS specifications */
+  word-break: break-word; /* Additional support for older browsers */
+}
+
+.comment-item .col-lg-3,
+.comment-item .col-md-3,
+.comment-item .col-sm-12 {
+  overflow: hidden; /* Prevents overflow issues */
+}
+
+.comment-item .col-lg-9,
+.comment-item .col-md-9,
+.comment-item .col-sm-12 {
+  overflow: hidden; /* Prevents overflow issues */
+}
+
+hr {
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .filter-buttons {
+    flex-direction: column;
+  }
+
+  .comment-section {
+    padding: 0.5rem;
+  }
+
+  .submit-btn {
+    padding: 0.5rem 1rem;
+  }
+
+  .rating-stars {
+    font-size: 1.2rem;
+  }
+
+  .rating-star {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .comments-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .filter-buttons {
+    flex-direction: column;
+  }
+
+  .filter-btn {
+    margin-bottom: 0.25rem;
+  }
+
+  .comment-section {
+    padding: 0.5rem;
+  }
+
+  .rating-stars {
+    font-size: 1rem;
+  }
+
+  .rating-star {
+    font-size: 1rem;
+  }
+
+  .submit-btn {
+    padding: 0.5rem;
+  }
 }
 
 /* Additional Styles */
@@ -688,14 +812,6 @@ textarea {
 
 .carousel-container{
   padding:  0rem 3rem 0rem 3rem !important;
-}
-
-// comment component
-.comments-container {
-  padding: 20px 40px; /* Adjust padding as needed */
-  background-color: #f5f5f5; /* Light background color */
-  border-radius: 8px; /* Optional: Rounded corners */
-  margin-top: 20px; /* Add some space above */
 }
 
 h5 {

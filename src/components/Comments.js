@@ -1,17 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import '../styles/app.css';
 
 const Comments = () => {
-  const [comments, setComments] = useState([
-    { id: 1, name: 'Jane Doe', rating: 5, text: 'Great product!', date: '07/22/2024' },
-    { id: 2, name: 'John Smith', rating: 3, text: 'It’s okay.', date: '07/23/2024' },
-    { id: 3, name: 'Alice Johnson', rating: 4, text: 'Pretty good!', date: '07/24/2024' },
-  ]);
+  const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [newRating, setNewRating] = useState(0);
   const [filterRating, setFilterRating] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchComments = async () => {
+    try {
+      const { data } = await axios.get('http://localhost:5000/comments');
+      setComments(data);
+    } catch (e) {
+      setError('Failed to load comments.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, []);
 
   const handleCommentSubmit = () => {
     if (newComment && newRating > 0) {
@@ -32,29 +46,35 @@ const Comments = () => {
     ? comments.filter(comment => comment.rating === filterRating)
     : comments;
 
+  if (loading) {
+    return <div>Loading comments...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
   return (
-    <div className="container pt-5 pb-5">
+    <div className="comments-container pt-5 pb-5">
       <div className="row">
-        {/* Empty Column */}
         <div className="col-lg-1 col-md-1"></div>
 
-        {/* Filter Section */}
-        <div className="col-lg-3 col-md-3 col-sm-12 mb-3 filter justify-content-start">
+        <div className="col-lg-3 col-md-3 col-sm-12 mb-3 filter-section">
           <h5>Filter by Rating</h5>
           <div className="filter-buttons">
             {[5, 4, 3, 2, 1].map(star => (
               <button
                 key={star}
-                className={`btn ${filterRating === star ? 'btn-primary' : 'btn-outline-primary'}`}
+                className={`filter-btn ${filterRating === star ? 'active' : ''}`}
                 onClick={() => setFilterRating(star)}
               >
                 {[...Array(star)].map((_, index) => (
-                  <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
+                  <FontAwesomeIcon key={index} icon={faStar} className="star-icon" />
                 ))}
               </button>
             ))}
             <button
-              className="btn btn-outline-secondary mt-2 clear-filter"
+              className="clear-filter-btn"
               onClick={() => setFilterRating(null)}
             >
               Clear Filter
@@ -62,29 +82,28 @@ const Comments = () => {
           </div>
         </div>
 
-        {/* Comments and Form Section */}
         <div className="col-lg-8 col-md-8 col-sm-12">
-          <div className='comment'>
+          <div className="comment-section">
             <h5>Add Your Comment</h5>
             <textarea
               value={newComment}
               onChange={e => setNewComment(e.target.value)}
               placeholder="Add your comment..."
-              className="form-control mb-2"
+              className="comment-textarea mb-2"
             />
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <div className="rating">
+            <div className="rating-section d-flex justify-content-between align-items-center mb-3">
+              <div className="rating-stars">
                 {[1, 2, 3, 4, 5].map(star => (
                   <span
                     key={star}
-                    className={`star ${newRating >= star ? 'filled' : ''}`}
+                    className={`rating-star ${newRating >= star ? 'filled' : ''}`}
                     onClick={() => setNewRating(star)}
                   >
                     <FontAwesomeIcon icon={faStar} />
                   </span>
                 ))}
               </div>
-              <button onClick={handleCommentSubmit} className="btn btn-primary">
+              <button onClick={handleCommentSubmit} className="submit-btn">
                 Submit
               </button>
             </div>
@@ -92,7 +111,7 @@ const Comments = () => {
 
             <h5>Comments</h5>
             {filteredComments.map(comment => (
-              <div key={comment.id} className="comment row mb-3">
+              <div key={comment.id} className="comment-item row mb-3">
                 <div className="col-lg-3 col-md-3 col-sm-12">
                   <strong>{comment.name}</strong> - <small>{comment.date}</small>
                 </div>
@@ -100,7 +119,7 @@ const Comments = () => {
                   <p>{comment.text}</p>
                   <small>
                     {[...Array(comment.rating)].map((_, index) => (
-                      <FontAwesomeIcon key={index} icon={faStar} className="text-warning" />
+                      <FontAwesomeIcon key={index} icon={faStar} className="star-icon" />
                     ))}
                   </small>
                 </div>
