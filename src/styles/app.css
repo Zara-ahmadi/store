@@ -350,6 +350,7 @@ button a:visited  {
 
 .filter-section {
   padding: 1rem;
+  display: block;
 }
 
 .filter-buttons {
@@ -362,7 +363,7 @@ button a:visited  {
 }
 
 .filter-btn.active {
-  background-color: #007bff;
+  background-color: #fff;
   color: white;
 }
 
@@ -372,7 +373,7 @@ button a:visited  {
 
 .comment-section {
   padding: 1rem;
-  background-color: #f9f9f9;
+  background-color: #fff;
   border-radius: 5px;
 }
 

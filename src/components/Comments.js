@@ -55,12 +55,12 @@ const Comments = () => {
   }
 
   return (
-    <div className="comments-container pt-5 pb-5">
+    <div className="container pt-5 pb-5">
       <div className="row">
         <div className="col-lg-1 col-md-1"></div>
 
-        <div className="col-lg-3 col-md-3 col-sm-12 mb-3 filter-section">
-          <h5>Filter by Rating</h5>
+        <div className=" bg-white rounded col-lg-3 col-md-3 col-sm-12 mb-3 filter-section">
+          <h5 className=''>Filter by Rating</h5>
           <div className="filter-buttons">
             {[5, 4, 3, 2, 1].map(star => (
               <button
